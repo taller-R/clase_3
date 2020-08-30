@@ -10,14 +10,14 @@
 #### 0.1 Limpiar la consola, el entorno y fijar directorio de trabajo
 cat("\f")
 rm(list=ls())
-setwd("~/Dropbox/teaching/Taller de R/GitHub/Clases/Clase 3/") # Cambiar este directorio
+setwd("~/Dropbox/teaching/taller de R/github/Clases/Clase 3") # Cambiar este directorio
+getwd()
 
 #### 0.2 Instalar las librerias que vamos a usar en la clase de hoy
 for ( paquete in c('tidyverse','readxl','haven') ){
-      existe = length(grep(paquete,installed.packages()[,1]))
-      if (existe == 0 ){ install.packages(paquete)}
-      else { print(paste0('La libreria ' , paquete , ' ya esta instalada.'))}
-      rm(paquete,existe)
+      if (length(grep(paquete,installed.packages()[,1])) == 0 ){ install.packages(paquete)}
+      else { print(paste0("La libreria ", "'", paquete ,"'", " ya esta instalada."))}
+      rm(paquete)
 }
 
 #### 0.3 Llamar las librerias
@@ -33,10 +33,12 @@ list.files("./datos/originales/")
 
 
 #### 1.2.1 Importar bases de datos en formato .csv
-?read.csv
-data_csv <- read.csv2(file = 'datos/originales/censo 2018.csv' ,sep = ",", header = TRUE , stringsAsFactors = F)
-str(data_csv)
-head(data_csv)
+?read.csv2
+data_csv <- read.csv2(file = 'datos/originales/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) 
+data_csv = data.frame(data_csv) # Convertir en dataframe
+str(data_csv) # Inspeccionar las variables del dataframe
+"Podemos cargar y convertir la base de datos en un dataframe en una misma linea (usando el operador Pipe)"
+data_csv <- read.csv2(file = 'datos/originales/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) %>% data.frame() 
 
 
 #### 1.2.2 Importar bases de datos en formato .xls y .xlsx (https://www.policia.gov.co/grupo-información-criminalidad/estadistica-delictiva)
@@ -55,17 +57,15 @@ head(data_dta)
 
 
 #### 1.2.4 Importar bases de datos en formato .rds
-?readRDS
-data_rds = readRDS(file = 'datos/originales/proyecciones DANE 2005-2020.rds')
+?readRDS # Obtener ayuda de la funcion
+data_rds = readRDS(file = 'datos/originales/proyecciones DANE 2005-2020.rds')  %>% data.frame() 
 str(data_rds) 
-head(data_rds)
 
 
 #### 1.2.5 Importar bases de datos en formato .Rdata
 ?load
-load(file = 'datos/originales/Homicidios 2020.Rdata')
+load(file = 'datos/originales/proyecciones DANE 2005-2020.Rdata')
 str(data_rdata)
-head(data_rdata)
 
 
 #--------------------------------------------#
@@ -73,7 +73,7 @@ head(data_rdata)
 #--------------------------------------------#
 
 # Funcion %>% (Pipe)
-c("2","4") %>% as.numeric(.)
+c("2","4") %>% as.numeric(.) 
 c("4","25") %>% as.numeric() %>% sqrt() %>% + 2  
 sqrt( as.numeric( c("4","25") ) ) + 2  # Esto es equivalente a la linea anterior
   
@@ -93,7 +93,7 @@ colnames(data_rdata)
 
 colnames(data_rdata)[c(2,3,9)]
 
-data_rdata_3 = data_rdata[,c(2,3,9)] # Usando el vector de los nombres
+data_rdata_4 = data_rdata[,c(2,3,9)] # Usando el vector de los nombres
 
 
 #### 2.1.2.1 Veamos la funcion grep
@@ -109,11 +109,11 @@ nombres = c( grep(pattern = 'municipio' , x = colnames(data_rdata)) ,
 
 
 #### 2.1.2.2 Usemos el vector con la posicion de los nombres
-data_rdata_4 = data_rdata[,nombres]
+data_rdata_5 = data_rdata[,nombres]
 
 
 #### 2.1.2.3 Limpiemos el entorno de los nuevos objetos que creamos
-rm(data_rdata_1,data_rdata_2,data_rdata_3,data_rdata_4)
+rm(data_rdata_1,data_rdata_2,data_rdata_3,data_rdata_4,data_rdata_5)
 
 'Revisen en casa esta otra forma de eliminar los objetos que empiezan por data_rdata_ usando la funcion grep'
 ls()

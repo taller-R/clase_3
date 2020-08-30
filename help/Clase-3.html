@@ -421,10 +421,10 @@ li {
 <h1>0. Configuración inicial</h1>
 <div id="limpiar-la-consola-el-entorno-y-fijar-directorio-de-trabajo" class="section level4">
 <h4>0.1 Limpiar la consola, el entorno y fijar directorio de trabajo</h4>
-<pre class="r"><code>cat(&quot;\f&quot;)</code></pre>
+<pre class="r"><code>cat(&quot;\f&quot;) # Limpiar la consola</code></pre>
 <div style="page-break-after: always;"></div>
-<pre class="r"><code>rm(list=ls())
-setwd(&quot;~/Dropbox/teaching/Taller de R/GitHub/Clases/Clase 3/&quot;) # Cambiar este directorio</code></pre>
+<pre class="r"><code>rm(list=ls()) # Limpiar el entorno de R
+setwd(&quot;~/Dropbox/teaching/Taller de R/GitHub/Clases/Clase 3&quot;) # Cambiar este directorio</code></pre>
 </div>
 <div id="instalar-las-librerias-que-vamos-a-usar-en-la-clase-de-hoy" class="section level4">
 <h4>0.2 Instalar las librerias que vamos a usar en la clase de hoy</h4>
@@ -441,12 +441,12 @@ setwd(&quot;~/Dropbox/teaching/Taller de R/GitHub/Clases/Clase 3/&quot;) # Cambi
 <div id="llamar-las-librerias" class="section level4">
 <h4>0.3 Llamar las librerias</h4>
 <pre class="r"><code>library(&#39;tidyverse&#39;) ; library(&#39;readxl&#39;) ; library(&#39;haven&#39;)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
 ## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
 ## ✓ tidyr   1.0.0     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <p><code>tidyverse</code> contiene ocho de las libreruas mas empleadas en el analisis cotidiano de bases de datos. A partir de la version <code>1.2.0</code>, <code>tidyverse</code> contiene los siguientes paquetes: <code>ggplot2</code>, <code>dplyr</code>, <code>tidyr</code>, <code>readr</code>, <code>purr</code>, <code>tibble</code>, <code>stringr</code> y <code>forcats</code>. Puede obtener mas informacion de <code>tidyverse</code> <a href="https://www.tidyverse.org/packages/">aquí</a>.</p>
@@ -454,62 +454,185 @@ setwd(&quot;~/Dropbox/teaching/Taller de R/GitHub/Clases/Clase 3/&quot;) # Cambi
 </div>
 <div id="importar-bases-de-datos-desde-diferentes-formatos" class="section level1">
 <h1>1. Importar bases de datos desde diferentes formatos</h1>
+<div id="hint-funcion-pipe" class="section level4">
+<h4>Hint: Funcion %&gt;% (Pipe)</h4>
+<pre class="r"><code>c(&quot;2&quot;,&quot;4&quot;) %&gt;% as.numeric(.)</code></pre>
+<pre><code>## [1] 2 4</code></pre>
+<pre class="r"><code>c(&quot;4&quot;,&quot;25&quot;) %&gt;% as.numeric() %&gt;% sqrt() %&gt;% + 2  </code></pre>
+<pre><code>## [1] 4 7</code></pre>
+<pre class="r"><code>sqrt( as.numeric( c(&quot;4&quot;,&quot;25&quot;) ) ) + 2  # Esto es equivalente a la linea anterior</code></pre>
+<pre><code>## [1] 4 7</code></pre>
+</div>
 <div id="inspeccionemos-las-bases-de-datos-en-nuestro-directorio-de-trabajo" class="section level4">
 <h4>1.1. Inspeccionemos las bases de datos en nuestro directorio de trabajo</h4>
-<pre class="import"><code>list.files(&quot;./datos/originales/&quot;)</code></pre>
+<pre class="r"><code>list.files(&quot;datos/originales/&quot;)</code></pre>
+<pre><code>## [1] &quot;Area - Caracteristicas generales (Personas).dta&quot;
+## [2] &quot;censo 2018.csv&quot;                                 
+## [3] &quot;Homicidios 2020.Rdata&quot;                          
+## [4] &quot;hurto-personas-2020_0.xlsx&quot;                     
+## [5] &quot;proyecciones DANE 2005-2020.rds&quot;</code></pre>
 </div>
 <div id="importar-bases-de-datos-en-formato-.csv" class="section level4">
 <h4>1.2.1 Importar bases de datos en formato .csv</h4>
-<pre class="import"><code>?read.csv
-data_csv &lt;- read.csv2(file = &#39;datos/originales/censo 2018.csv&#39; ,sep = &quot;,&quot;, header = TRUE)
-str(data_csv)
-head(data_csv)</code></pre>
+<pre class="r"><code>?read.csv # Obtener ayuda de la funcion
+data_csv &lt;- read.csv2(file = &#39;datos/originales/censo 2018.csv&#39; ,sep = &quot;,&quot;, header = TRUE, stringsAsFactors = F)
+data_csv = data.frame(data_csv) # Convertir en dataframe
+str(data_csv) # Inspeccionar las variables del dataframe</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1165 obs. of  7 variables:
+##  $ X                                                 : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Censo.Nacional.de.Población.y.Vivienda...CNPV.2018: chr  NA &quot;Población Total Censada en Hogares Particulares y en Lugares Especiales de Alojamiento (LEA)&quot; NA &quot;TOTAL 2018&quot; ...
+##  $ ...2                                              : chr  NA NA NA NA ...
+##  $ ...3                                              : chr  NA NA NA NA ...
+##  $ ...4                                              : chr  NA NA NA NA ...
+##  $ ...5                                              : chr  NA NA NA NA ...
+##  $ ...6                                              : chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code># Podemos cargar y convertir la base de datos en un dataframe en una misma linea (usando el operador Pipe)
+data_csv &lt;- read.csv2(file = &#39;datos/originales/censo 2018.csv&#39; ,sep = &quot;,&quot;, header = T, stringsAsFactors = F) %&gt;% data.frame() </code></pre>
 </div>
 <div id="importar-bases-de-datos-en-formato-.xls-y-.xlsx" class="section level4">
 <h4>1.2.2 Importar bases de datos en formato .xls y .xlsx</h4>
-<pre class="import"><code>excel_sheets(path = &#39;datos/originales/hurto-personas-2020_0.xlsx&#39;) # Hojas que contiene el excel 
-?read_excel
-data_xls &lt;- read_excel(path = &#39;datos/originales/hurto-personas-2020_0.xlsx&#39; , sheet = &quot;Sheet1&quot; , col_names = TRUE) # Cargar archivo
-str(data_xls) 
-head(data_xls)</code></pre>
+<pre class="r"><code>excel_sheets(path = &#39;datos/originales/hurto-personas-2020_0.xlsx&#39;) # Hojas que contiene el excel </code></pre>
+<pre><code>## [1] &quot;Sheet1&quot;</code></pre>
+<pre class="r"><code>?read_excel # Obtener ayuda de la funcion
+data_xls &lt;- read_excel(path = &#39;datos/originales/hurto-personas-2020_0.xlsx&#39; , sheet = &quot;Sheet1&quot; , col_names = TRUE) %&gt;% data.frame() </code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>str(data_xls)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    9747 obs. of  9 variables:
+##  $ MINISTERIO.DE.DEFENSA.NACIONAL: chr  &quot;POLICÍA NACIONAL&quot; NA NA NA ...
+##  $ ...2                          : chr  NA NA NA NA ...
+##  $ ...3                          : chr  NA NA NA NA ...
+##  $ ...4                          : chr  NA NA NA NA ...
+##  $ ...5                          : chr  NA NA NA NA ...
+##  $ ...6                          : chr  NA NA NA NA ...
+##  $ ...7                          : chr  NA NA NA NA ...
+##  $ ...8                          : chr  NA NA NA NA ...
+##  $ ...9                          : chr  NA NA NA NA ...</code></pre>
 <p>La base de datos de hurtos a personas se obtiene de las estadísticas delictivas procesadas por el GICRI de la Policía Nacional y puede ser descargada <a href="https://www.policia.gov.co/grupo-información-criminalidad/estadistica-delictiva">aquí</a>.</p>
 </div>
 <div id="importar-bases-de-datos-en-formato-.dta" class="section level4">
 <h4>1.2.3 Importar bases de datos en formato .dta</h4>
-<pre class="import"><code>?read_dta
-data_dta &lt;- read_dta(file = &#39;datos/originales/Area - Caracteristicas generales (Personas).dta&#39;) 
-str(data_dta)
-head(data_dta)</code></pre>
+<pre class="r"><code>?read_dta # Obtener ayuda de la funcion
+data_dta &lt;- read_dta(file = &#39;datos/originales/Area - Caracteristicas generales (Personas).dta&#39;)  %&gt;% data.frame() 
+str(data_dta)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    31187 obs. of  30 variables:
+##  $ directorio : num  120468 120468 120475 120475 120476 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ secuencia_p: num  1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ orden      : num  1 2 1 2 1 2 3 1 1 2 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6020      : num  1 2 1 2 2 2 1 2 2 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6040      : num  69 45 61 64 70 94 24 54 51 33 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6050      : num  1 2 1 2 1 5 5 1 1 3 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S1    : num  NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S2    : num  NA NA NA NA NA NA NA 1 NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S3    : num  NA NA 1 1 1 NA NA NA 1 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S4    : num  NA 1 NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S5    : num  NA NA NA NA NA NA 1 NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S6    : num  NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S7    : num  NA NA 1 NA NA NA NA NA 1 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S8    : num  NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S9    : num  1 1 NA NA NA NA 1 1 NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S10   : num  NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P3147S11   : num  NA NA NA NA NA 1 NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6090      : num  1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6100      : num  1 3 1 1 3 3 3 3 3 3 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6110      : num  2 NA 5 2 NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6160      : num  1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6170      : num  2 2 2 2 2 2 2 2 2 2 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6210      : num  3 3 3 3 5 3 5 4 4 5 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6210S1    : num  3 4 5 5 11 5 11 6 7 11 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ P6220      : num  NA NA NA NA 2 NA 2 NA NA 2 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ ESC        : num  3 4 5 5 11 5 11 6 7 11 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ mes        : num  6 6 6 6 6 6 6 6 6 6 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ area       : num  68 68 68 68 68 68 68 76 68 68 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ dpto       : num  68 68 68 68 68 68 68 76 68 68 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%12.0g&quot;
+##  $ fex_c_2011 : num  1211 1211 539 539 1122 ...
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%10.0g&quot;</code></pre>
 <p>La base de datos de la Gran Encuesta Integrada de Hogares (GEIH) es recolectada y organizada por el DANE. Los microdatos pueden ser descargados <a href="https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral">aquí</a>.</p>
 </div>
 <div id="importar-bases-de-datos-en-formato-.rds" class="section level4">
 <h4>1.2.4 Importar bases de datos en formato .rds</h4>
-<pre class="import"><code>?readRDS
-data_rds = readRDS(file = &#39;datos/originales/proyecciones DANE 2005-2020.rds&#39;)
-str(data_rds) 
-head(data_rds)</code></pre>
+<pre class="r"><code>?readRDS # Obtener ayuda de la funcion
+data_rds = readRDS(file = &#39;datos/originales/proyecciones DANE 2005-2020.rds&#39;)  %&gt;% data.frame() 
+str(data_rds) </code></pre>
+<pre><code>## &#39;data.frame&#39;:    18496 obs. of  17 variables:
+##  $ name_codigo    : chr  &quot;Total Nacional -00&quot; NA NA NA ...
+##  $ year           : num  2005 2006 2007 2008 2009 ...
+##  $ total_poblacion: num  42888592 43405956 43926929 44451147 44978832 ...
+##  $ total_0_years  : num  856218 851173 850081 851231 854430 ...
+##  $ total_1_years  : num  862734 857388 854540 853612 854392 ...
+##  $ total_2_years  : num  868980 863419 859266 856484 855106 ...
+##  $ total_3_years  : num  875005 869373 864144 859820 856614 ...
+##  $ total_hombres  : num  21169835 21426954 21683071 21942355 22203708 ...
+##  $ hombres_0_years: num  438024 435887 435572 436054 437453 ...
+##  $ hombres_1_years: num  440837 438425 437187 436764 437147 ...
+##  $ hombres_2_years: num  443610 440977 439069 437808 437245 ...
+##  $ hombres_3_years: num  446415 443656 441139 439167 437773 ...
+##  $ total_mujeres  : num  21718757 21979002 22243858 22508792 22775124 ...
+##  $ mujeres_0_years: num  418194 415286 414509 415177 416977 ...
+##  $ mujeres_1_years: num  421897 418963 417353 416848 417245 ...
+##  $ mujeres_2_years: num  425370 422442 420197 418676 417861 ...
+##  $ mujeres_3_years: num  428590 425717 423005 420653 418841 ...</code></pre>
 </div>
 <div id="importar-bases-de-datos-en-formato-.rdata" class="section level4">
 <h4>1.2.5 Importar bases de datos en formato .Rdata</h4>
-<pre class="import"><code>?load
-load(file = &#39;datos/originales/proyecciones DANE 2005-2020.Rdata&#39;)
-str(data_rdata)
-head(data_rdata)</code></pre>
+<pre class="r"><code>?load
+load(file = &#39;datos/originales/Homicidios 2020.Rdata&#39;)
+str(data_rdata)</code></pre>
+<pre><code>## tibble [2,898 × 9] (S3: tbl_df/tbl/data.frame)
+##  $ departamento        : chr [1:2898] &quot;AMAZONAS&quot; &quot;ANTIOQUIA&quot; &quot;ANTIOQUIA&quot; &quot;ANTIOQUIA&quot; ...
+##  $ municipio           : chr [1:2898] &quot;LETICIA (CT)&quot; &quot;ANDES&quot; &quot;ARGELIA&quot; &quot;BARBOSA&quot; ...
+##  $ codigo dane         : chr [1:2898] &quot;91001000&quot; &quot;05034000&quot; &quot;05055000&quot; &quot;05079000&quot; ...
+##  $ armas medios        : chr [1:2898] &quot;ARMA BLANCA / CORTOPUNZANTE&quot; &quot;ARMA BLANCA / CORTOPUNZANTE&quot; &quot;ARMA BLANCA / CORTOPUNZANTE&quot; &quot;ARMA BLANCA / CORTOPUNZANTE&quot; ...
+##  $ mes                 : chr [1:2898] &quot;MARZO&quot; &quot;ENERO&quot; &quot;ENERO&quot; &quot;ENERO&quot; ...
+##  $ descripcion conducta: chr [1:2898] &quot;ARTÍCULO 103. HOMICIDIO&quot; &quot;ARTÍCULO 103. HOMICIDIO&quot; &quot;ARTÍCULO 103. HOMICIDIO&quot; &quot;ARTÍCULO 103. HOMICIDIO&quot; ...
+##  $ genero              : chr [1:2898] &quot;MASCULINO&quot; &quot;MASCULINO&quot; &quot;MASCULINO&quot; &quot;MASCULINO&quot; ...
+##  $ agrupa edad persona : chr [1:2898] &quot;ADULTOS&quot; &quot;ADULTOS&quot; &quot;ADULTOS&quot; &quot;ADULTOS&quot; ...
+##  $ cantidad            : chr [1:2898] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...</code></pre>
 </div>
 </div>
 <div id="filtrar-dataframes-filas-yo-columnas" class="section level1">
 <h1>2. Filtrar dataframes (filas y/o columnas)</h1>
-<div id="funcion-pipe" class="section level4">
-<h4>Funcion %&gt;% (Pipe)</h4>
-<pre class="filter"><code>c(&quot;2&quot;,&quot;4&quot;) %&gt;% as.numeric(.)
-c(&quot;4&quot;,&quot;25&quot;) %&gt;% as.numeric() %&gt;% sqrt() %&gt;% + 2  
-sqrt( as.numeric( c(&quot;4&quot;,&quot;25&quot;) ) ) + 2  # Esto es equivalente a la linea anterior</code></pre>
-</div>
 <div id="seleccionar-columnas-de-un-dataframe-usando-los-nombre-de-las-variables" class="section level4">
 <h4>2.1.1 Seleccionar columnas de un dataframe usando los nombre de las variables</h4>
-<pre class="filter"><code>colnames(data_rdata)
-
-data_rdata_1 = dplyr::select(data_rdata , municipio , `codigo dane` , mes , cantidad) # usar `` cuando hay espacios en los nombres
+<pre class="r"><code>colnames(data_rdata)</code></pre>
+<pre><code>## [1] &quot;departamento&quot;         &quot;municipio&quot;            &quot;codigo dane&quot;         
+## [4] &quot;armas medios&quot;         &quot;mes&quot;                  &quot;descripcion conducta&quot;
+## [7] &quot;genero&quot;               &quot;agrupa edad persona&quot;  &quot;cantidad&quot;</code></pre>
+<pre class="r"><code>data_rdata_1 = dplyr::select(data_rdata , municipio , `codigo dane` , mes , cantidad) # usar `` cuando hay espacios en los nombres
 
 data_rdata_2 = dplyr::select(data_rdata , -departamento) # Anteponer el - cuando quiero eliminar una variable
 
@@ -517,130 +640,13 @@ data_rdata_3 = data_rdata[,c(&#39;municipio&#39; , &#39;codigo dane&#39; , &#39;
 </div>
 <div id="seleccionar-columnas-de-un-dataframe-usando-la-posicion-de-las-columnas" class="section level4">
 <h4>2.1.2 Seleccionar columnas de un dataframe usando la posicion de las columnas</h4>
-<pre class="filter"><code>colnames(data_rdata)
-
-colnames(data_rdata)[c(2,3,9)]
-
-data_rdata_3 = data_rdata[,c(2,3,9)] # Usando el vector de los nombres</code></pre>
-</div>
-<div id="veamos-la-funcion-grep" class="section level4">
-<h4>2.1.2.1 Veamos la funcion grep</h4>
-<pre class="filter"><code>grep(pattern = &#39;la&#39; , x = c(&#39;Hola&#39;,&#39;Pola&#39;,&#39;Nada&#39;,&#39;Todo&#39;))
-
-grep(pattern = &#39;municipio&#39; , x = colnames(data_rdata))
-
-nombres = c( grep(pattern = &#39;municipio&#39; , x = colnames(data_rdata)) , 
-             grep(pattern = &#39;codigo dane&#39; , x = colnames(data_rdata)) , 
-             grep(pattern = &#39;mes&#39; , x = colnames(data_rdata)) , 
-             grep(pattern = &#39;cantidad&#39; , x = colnames(data_rdata))
-            )</code></pre>
-</div>
-<div id="usemos-el-vector-con-la-posicion-de-los-nombres" class="section level4">
-<h4>2.1.2.2 Usemos el vector con la posicion de los nombres</h4>
-<pre class="filter"><code>data_rdata_4 = data_rdata[,nombres]</code></pre>
-</div>
-<div id="limpiemos-el-entorno-de-los-nuevos-objetos-que-creamos" class="section level4">
-<h4>2.1.2.3 Limpiemos el entorno de los nuevos objetos que creamos</h4>
-<pre class="filter"><code>rm(data_rdata_1,data_rdata_2,data_rdata_3,data_rdata_4)
-
-&#39;Revisen en casa esta otra forma de eliminar los objetos que empiezan por data_rdata_ usando la funcion grep&#39;
-ls()
-grep(&#39;data_rdata_&#39;,ls())
-ls()[grep(&#39;data_rdata_&#39;,ls())]
-rm(list = ls()[grep(&#39;data_rdata_&#39;,ls())])</code></pre>
-</div>
-<div id="filtrar-filas-de-un-dataframe" class="section level4">
-<h4>2.2 Filtrar filas de un dataframe</h4>
-<pre class="filter"><code>&#39;Vamos a sellecionar solo algunas columnas del dataframe data_csv&#39;
-View(data_csv)
-data_csv = data_csv[,c(2,4,7)]
-colnames(data_csv) = c(&#39;cod_dane&#39;,&#39;name_muni&#39;,&#39;poblacion&#39;)
-view(data_csv)</code></pre>
-</div>
-<div id="usando-la-posicion-de-las-filas" class="section level4">
-<h4>2.2.1 Usando la posicion de las filas</h4>
-<pre class="filter"><code>nrow(data_csv)
-nrow(data_csv)-3
-41:(nrow(data_csv)-3)
-data_csv_1 = data_csv[41:(nrow(data_csv)-3),]</code></pre>
-</div>
-<div id="usando-los-atributos-de-la-variable" class="section level4">
-<h4>2.2.2 Usando los atributos de la variable</h4>
-<pre class="filter"><code>data_csv_2 = subset(x = data_csv, subset = is.na(name_muni) == F)
-
-data_csv_3 = subset(x = data_csv, subset = is.na(name_muni) == F  &amp; as.numeric(poblacion) &gt; 100000)
-
-data_csv_4 = subset(x = data_csv, subset = is.na(name_muni) == F) %&gt;% 
-             subset(as.numeric(poblacion) &gt; 100000)
-
-data_csv_5 = dplyr::filter(data_csv, name_muni %in% c(&#39;Medellín&#39;,&#39;Barranquilla&#39;,&#39;Cartagena&#39;))</code></pre>
-</div>
-<div id="usando-un-vector" class="section level4">
-<h4>2.2.3 Usando un vector</h4>
-<pre class="filter"><code>is.na(data_csv$name_muni) 
-data_csv_6 = data_csv[is.na(data_csv$name_muni) == F, ]
-
-data_csv_7 = data_csv[ data_csv$name_muni %in% c(&#39;Medellín&#39;,&#39;Barranquilla&#39;,&#39;Cartagena&#39;) , ]</code></pre>
-</div>
-<div id="limpiemos-la-memoria-una-vez-mas" class="section level4">
-<h4>2.2.4 Limpiemos la memoria una vez mas</h4>
-<pre class="filter"><code>rm(list = ls()[grep(&#39;data_csv_&#39;,ls())])</code></pre>
-</div>
-</div>
-<div id="colapsar-un-dataframe" class="section level1">
-<h1>3 “Colapsar” un dataframe</h1>
-<div id="calculos-por-grupos" class="section level4">
-<h4>3.1 Calculos por grupos</h4>
-<pre class="filter"><code>&#39;primero aseguremonos que el factor de expancion sea numerico&#39;
-is.numeric(data_dta$fex_c_2011)
-
-&#39;numero de encuestados por sexo&#39;
-data_dta %&gt;% group_by(P6020) %&gt;% summarise(total = sum(fex_c_2011))
-
-&#39;numero de encuestados por sexo y ciudad&#39;
-sexo_area = data_dta %&gt;% group_by(P6020,area) %&gt;% summarise(total = sum(fex_c_2011))</code></pre>
-</div>
-<div id="calculos-por-grupos-aplicando-filtros" class="section level4">
-<h4>3.2 Calculos por grupos aplicando filtros</h4>
-<pre class="filter"><code>&#39;media de la educacion y la edad por sexo&#39;
-data_dta %&gt;% group_by(P6020) %&gt;% summarise(education = weighted.mean(ESC, fex_c_2011) ,  age = weighted.mean(P6040, fex_c_2011))
-
-&#39;limpiemos la variable primero&#39;
-is.numeric(data_dta$ESC)
-data_dta %&gt;% subset(is.na(ESC)==F) %&gt;% group_by(P6020) %&gt;% summarise(education = weighted.mean(ESC, fex_c_2011) , 
-                                                                     age = weighted.mean(P6040, fex_c_2011))
-
-&#39;Hagamos el calculo solo para bogota&#39;
-data_dta %&gt;% subset(is.na(ESC)==F &amp; area == 11) %&gt;% group_by(P6020) %&gt;% summarise(education = weighted.mean(ESC, fex_c_2011) , 
-                                                                               age = weighted.mean(P6040, fex_c_2011))</code></pre>
-</div>
-</div>
-<div id="exportar-bases-de-datos" class="section level1">
-<h1>4 Exportar bases de datos</h1>
-<div id="exportar-bases-de-datos-en-formato-.csv" class="section level4">
-<h4>4.1.1 Exportar bases de datos en formato .csv</h4>
-<pre class="export"><code>?write.csv
-write.csv(x = data_csv , file = &#39;datos/procesados/censo 2018.csv&#39;)</code></pre>
-</div>
-<div id="exportar-bases-de-datos-en-formato-.xls-y-.xlsx" class="section level4">
-<h4>4.1.2 Exportar bases de datos en formato .xls y .xlsx</h4>
-<pre class="export"><code>install.packages(&quot;WriteXLS&quot;)
-WriteXLS::WriteXLS(x = data_xls, ExcelFileName = &quot;datos/procesados/Hurtos 2020.xlsx&quot; , SheetNames =  &quot;Hurtos&quot;) </code></pre>
-</div>
-<div id="exportar-bases-de-datos-en-formato-.dta" class="section level4">
-<h4>4.1.3 Exportar bases de datos en formato .dta</h4>
-<pre class="export"><code>?write_dta
-write_dta(data = data_dta ,path = &#39;datos/procesados/Area - Caracteristicas generales (Personas).dta&#39;) </code></pre>
-</div>
-<div id="exportar-bases-de-datos-en-formato-.rds" class="section level4">
-<h4>4.1.4 Exportar bases de datos en formato .rds</h4>
-<pre class="export"><code>?saveRDS
-saveRDS(object = data_rds, file = &#39;datos/procesados/proyecciones DANE 2005-2020.rds&#39;)</code></pre>
-</div>
-<div id="importar-bases-de-datos-en-formato-.rdata-1" class="section level4">
-<h4>4.1.5 Importar bases de datos en formato .Rdata</h4>
-<pre class="export"><code>?save
-save(data_rds,data_dta,data_xls,data_csv,file = &#39;datos/procesados/Datos.Rdata&#39;)</code></pre>
+<pre class="r"><code>colnames(data_rdata)</code></pre>
+<pre><code>## [1] &quot;departamento&quot;         &quot;municipio&quot;            &quot;codigo dane&quot;         
+## [4] &quot;armas medios&quot;         &quot;mes&quot;                  &quot;descripcion conducta&quot;
+## [7] &quot;genero&quot;               &quot;agrupa edad persona&quot;  &quot;cantidad&quot;</code></pre>
+<pre class="r"><code>colnames(data_rdata)[c(2,3,9)]</code></pre>
+<pre><code>## [1] &quot;municipio&quot;   &quot;codigo dane&quot; &quot;cantidad&quot;</code></pre>
+<pre class="r"><code>data_rdata_3 = data_rdata[,c(2,3,9)] # Usando el vector de los nombres</code></pre>
 </div>
 </div>
 

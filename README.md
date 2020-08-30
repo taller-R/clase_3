@@ -22,7 +22,7 @@ setwd("~/Downloads/clase_3-master")
 # 5. Inspeccionar archivos en el directorio 
 list.files()
 ```
-O puede seguir estas [instruciones](https://eduard-martinez.github.io/blog/github/clonar_github.html) para clonar este repositorio en su cuenta de GitHub.  
+O puede seguir las siguientes [instruciones](https://eduard-martinez.github.io/blog/github/clonar_github.html) para crear una version de control de GitHub en Rstudio.  
 
 
 
