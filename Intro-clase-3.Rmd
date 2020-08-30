@@ -1,0 +1,123 @@
+---
+pagetitle: "Introduccion de la clase"
+outputdir: "."
+output: html_document
+---
+<!-- Estilo del HTML -->
+<style type="text/css">
+h1 {
+  font-size: 32px;
+  color: red
+}
+h1.title {
+  font-size: 32px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+p {
+ font-size: 16px;
+ color: black
+}
+li {
+ font-size: 16px;
+ color: black
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+<!-- Estilo del HTML -->
+
+<!-- Configuracion de la consola de R -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T , eval = T , warning = T)
+```
+
+# 1. En la clase anterior vimos
+
+* Manejo de la biblioteca y gestión de paquetes
+* Trabajar sobre un directorio de trabajo en R
+* Estructuras de datos en R
+
+# 2. Hoy veremos 
+
+* Importar bases de datos desde diferentes formatos
+* Filtrar dataframes (filas y/o columnas)
+* "Colapsar" un dataframe
+* Exportar bases de datos
+
+# 3. Antes de iniciar la clase ...
+
+### 3.1 Limpiar consola, entorno y fijar directorio de trabajo
+
+Primero limpiemos la consola y la memoria activa de R.
+```{r}
+cat("\f")
+rm(list=ls())
+```
+
+Cambiemos el directorio de trabajo por la ruta a la carpeta que contiene la ```Clase 4``` en nuestro equipo:
+```{r}
+setwd("~/Dropbox/teaching/taller de R/github/Clases/Clase 3") # Cambiar este directorio
+```
+
+Vamos a asegurarnos que estamos sobre el directorio de trabajo correcto. Si escribimos ```getwd()``` sobre la consola, debemos obtener la ruta dentro de nuestro pc que hemos fijado como directorio de trabajo. Si estamos en el directorio correcto, despues del ultimo ```/``` debemos observar el nombre la carpeta así:
+
+* ```Clase 4``` (si lo descargas manualmente o creando una versión de control) 
+* ```clase_4-master``` (si lo descargas usando la función ```download.file()```)
+
+```{r}
+getwd()
+```
+
+De igual forma, puedes escribir sobre la consola ```list.files()``` para revisar los archivos que tienes en el directorio de trabajo. Deberias observar estos archivos:
+
+```{r}
+list.files()
+```
+
+Sino observas estos archivos sobre la consola, deberias fijar el directorio correctamente antes de continuar.
+
+
+### 3.2 Instalar las librerias de la clase
+
+Vamos a verificar que todos los paquetes que vamos a usar en la clase están instalados en nuestro equipo:
+
+```{r}
+for ( paquete in c('tidyverse','readxl','have') ){
+      if (length(grep(paquete,installed.packages()[,1])) == 0 ){ install.packages(paquete) ; print(paste0("La libreria ", "'", paquete ,"'", " ha sido instalada."))}
+      else { print(paste0("La libreria ", "'", paquete ,"'", " ya está instalada."))}
+      rm(paquete)
+}
+```
+Después de correr estas lineas de código, debeíamos observar sobre la consola los siguientes mensajes:
+
+* ```"La libreria 'X' ya está instalada."``` (si ya teníamos instalada la libreria) 
+* ```"La libreria 'X' ha sido instalada."``` (sino teníamos instalada la libreria, pero ya se instaló) 
+
+### 3.3 Llamar las librerias de la clase
+
+Ahora vamos a llamar las librerias que vamos a usar en la clase: 
+
+```{r}
+library('tidyverse') ; library('readxl') ; library('haven')
+```
+
+
+### 3.4 Vamos a Rstudio...
+
+Ahora sí, vamos al script de la clase ...
+
+![](help/graphs/corriendo.jpg)
+
+
+
+
+
