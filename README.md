@@ -4,7 +4,6 @@
 
 # INSTRUCCIONES
 
-
 ## 1. Descargar la clase
 
 Para descargar las clases debes seguir los siguientes pasos:
