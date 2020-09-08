@@ -7,6 +7,9 @@
 # 0. Configuración inicial #
 #--------------------------#
 
+#### 0.0 Hoy veremos...
+rstudioapi::viewer(url = "Intro-clase-3.html")
+
 #### 0.1 Limpiar la consola, el entorno y fijar directorio de trabajo
 cat("\f")
 rm(list=ls())
@@ -14,9 +17,9 @@ setwd("~/Dropbox/teaching/taller de R/github/Clases/Clase 3") # Cambiar este dir
 getwd()
 
 #### 0.2 Instalar las librerias que vamos a usar en la clase de hoy
-for ( paquete in c('tidyverse','readxl','haven') ){
-      if (length(grep(paquete,installed.packages()[,1])) == 0 ){ install.packages(paquete)}
-      else { print(paste0("La libreria ", "'", paquete ,"'", " ya esta instalada."))}
+for ( paquete in c('tidyverse','readxl','have') ){
+      if (length(grep(paquete,installed.packages()[,1])) == 0 ){ install.packages(paquete) ; print(paste0("La libreria ", "'", paquete ,"'", " ha sido instalada."))}
+      else { print(paste0("La libreria ", "'", paquete ,"'", " ya está instalada."))}
       rm(paquete)
 }
 
@@ -29,42 +32,42 @@ library('tidyverse') ; library('readxl') ; library('haven')
 
 
 #### 1.1 Inspeccionemos las bases de datos en nuestro directorio de trabajo
-list.files("./datos/originales/")
+list.files("./datos/original/")
 
 
 #### 1.2.1 Importar bases de datos en formato .csv
 ?read.csv2
-data_csv <- read.csv2(file = 'datos/originales/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) 
+data_csv <- read.csv2(file = 'datos/original/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) 
 data_csv = data.frame(data_csv) # Convertir en dataframe
 str(data_csv) # Inspeccionar las variables del dataframe
 "Podemos cargar y convertir la base de datos en un dataframe en una misma linea (usando el operador Pipe)"
-data_csv <- read.csv2(file = 'datos/originales/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) %>% data.frame() 
+data_csv <- read.csv2(file = 'datos/original/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) %>% data.frame() 
 
 
 #### 1.2.2 Importar bases de datos en formato .xls y .xlsx (https://www.policia.gov.co/grupo-información-criminalidad/estadistica-delictiva)
-excel_sheets(path = 'datos/originales/hurto-personas-2020_0.xlsx') # Hojas que contiene el excel 
+excel_sheets(path = 'datos/original/hurto-personas-2020_0.xlsx') # Hojas que contiene el excel 
 ?read_excel
-data_xls <- read_excel(path = 'datos/originales/hurto-personas-2020_0.xlsx' , sheet = "Sheet1" , col_names = TRUE) # Cargar archivo
+data_xls <- read_excel(path = 'datos/original/hurto-personas-2020_0.xlsx' , sheet = "Sheet1" , col_names = TRUE) # Cargar archivo
 str(data_xls) 
 head(data_xls)
 
 
 #### 1.2.3 Importar bases de datos en formato .dta
 ?read_dta
-data_dta <- read_dta(file = 'datos/originales/Area - Caracteristicas generales (Personas).dta') 
+data_dta <- read_dta(file = 'datos/original/Area - Caracteristicas generales (Personas).dta') 
 str(data_dta)
 head(data_dta)
 
 
 #### 1.2.4 Importar bases de datos en formato .rds
 ?readRDS # Obtener ayuda de la funcion
-data_rds = readRDS(file = 'datos/originales/proyecciones DANE 2005-2020.rds')  %>% data.frame() 
+data_rds = readRDS(file = 'datos/original/proyecciones DANE 2005-2020.rds')  %>% data.frame() 
 str(data_rds) 
 
 
 #### 1.2.5 Importar bases de datos en formato .Rdata
 ?load
-load(file = 'datos/originales/proyecciones DANE 2005-2020.Rdata')
+load(file = 'datos/original/proyecciones DANE 2005-2020.Rdata')
 str(data_rdata)
 
 

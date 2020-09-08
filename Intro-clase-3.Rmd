@@ -1,6 +1,5 @@
 ---
 pagetitle: "Introduccion de la clase"
-outputdir: "."
 output: html_document
 ---
 <!-- Estilo del HTML -->
@@ -70,8 +69,8 @@ setwd("~/Dropbox/teaching/taller de R/github/Clases/Clase 3") # Cambiar este dir
 
 Vamos a asegurarnos que estamos sobre el directorio de trabajo correcto. Si escribimos ```getwd()``` sobre la consola, debemos obtener la ruta dentro de nuestro pc que hemos fijado como directorio de trabajo. Si estamos en el directorio correcto, despues del ultimo ```/``` debemos observar el nombre la carpeta así:
 
-* ```Clase 4``` (si lo descargas manualmente o creando una versión de control) 
-* ```clase_4-master``` (si lo descargas usando la función ```download.file()```)
+* ```Clase 3``` (si lo descargas manualmente o creando una versión de control) 
+* ```clase_3-master``` (si lo descargas usando la función ```download.file()```)
 
 ```{r}
 getwd()
