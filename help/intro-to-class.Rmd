@@ -1,0 +1,323 @@
+---
+title: "Taller de R: Estadística y programación"
+subtitle: "Lectura 3: Estructuras de datos en R"
+author: "Eduard Martinez"
+date: "Universidad de los Andes | [ECON-1302](https://github.com/taller-R)"
+output: 
+  xaringan::moon_reader:
+    css: [fc , default , default-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(here)
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center",  
+  fig.height=4, #fig.width=6, out.width="748px", out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=T#, echo=F, warning=F, message=F
+  )
+```
+
+# Anteriormente...
+
+1. [Rstudio](#rstudio)
+   
+   1.1. Interfaz de Rstudio
+   
+   1.2. Decoding messages
+
+2. [Use R!](#use_r)
+   
+   2.1. Sintaxis de R
+   
+   2.2. Editor de sintaxis
+   
+   2.3. Librerías
+
+3. [Git y GitHub](#github)
+
+   3.1. Qué es Git y GitHub?
+   
+   3.2. Flujo de trabajo
+   
+---
+   
+# Hoy veremos...
+
+1. [Directorio de trabajo](#setwd)
+
+2. [Tipos de datos](#type)
+
+3. [Estructuras de datos en R](#structure)
+   
+   3.1. Homogéneos
+   
+   3.2. Heterogéneos
+   
+4. [Importar y exportar bases de datos](#import)
+
+
+
+<!----------------------------->
+<!--- Directorio de trabajo --->
+<!----------------------------->
+---
+class: inverse, center, middle
+name: setwd
+
+# Directorio de trabajo
+
+<html><div style='float:left'></div><hr color='#FF007F' size=1px width=796px></html>
+
+Es la ubicacion dentro de nuestro equipo en la que se encuentran los archivos que podemos importar (directamente) archivos del disco duro a R y exportar (directamente) objetos de R al disco duro.
+
+---
+# Por qué establecer un WD?
+
+- Si no usamos un WD
+
+```{r,eval=F,include=T}
+'usuario1/escritorio/trabajo final/datos/' # importar los datos
+
+'usuario1/escritorio/trabajo final/resultados/' # exportar los resultados
+```
+
+--
+- si establecemos `'usuario1/escritorio/trabajo final/'` como WD:
+```{r,eval=F,include=T}
+'datos/' # importar los datos
+
+'resultados/' # exportar los resultados
+```
+
+--
+- algunas funciones para trabajar con un WD:
+
+```{r,eval=F,include=T}
+
+# obtener la ruta del directorio de trabajo actual
+getwd() 
+
+# obtener un vector con los nombres de los archivos que estan en el wd
+list.files(path = '.') 
+
+# Establecer un directorio de trabajo
+setwd('ruta del nuevo directorio de trabajo') 
+```
+
+<!--------------------------->
+<!--- Tipos de datos en R --->
+<!--------------------------->
+---
+class: inverse, center, middle
+name: type
+
+# Tipos de datos en R
+
+<html><div style='float:left'></div><hr color='#FF007F' size=1px width=796px></html>
+
+---
+# Tipos de datos en R
+
+EN R encontramos estos datos en formato `logical`, `integer`, `numeric` (o `double`), "complex", `character` y "raw".
+
+```{r,eval=T,include=T}
+# carácter
+vector_c = c("hola",'a') # podemos usar ' o " para caracteres
+is.character(vector_c)
+
+# lógico
+vector_l = c(NA,TRUE,FALSE)
+is.logical(vector_l)
+
+# númerico
+vector_n = c(5,2)
+is.numeric(vector_n)
+```
+
+puedo consultar el tipo de datos que contiene un objeto usandl la función `is()`.
+   
+<!--------------------------------->
+<!--- Estructuras de datos en R --->
+<!--------------------------------->
+---
+class: inverse, center, middle
+name: structure
+
+# Estructuras de datos en R
+
+<html><div style='float:left'></div><hr color='#FF007F' size=1px width=796px></html>
+
+---
+# Estructuras de datos
+
+| Dimensiones | Homogéneos	|  Heterogéneos  |
+|:-|-:|-:|
+| 1d          |  Vector    |   Listas       |
+|             |            |                |
+| 2d          |  Matriz    |   Dataframe    |
+|             |            |                |
+| nd          |  Array     |                |
+
+
+- **Homogéneos:** todos los elementos de este objeto deben ser del mismo tipo (númerico o carácter o lógico).
+
+- **Heterogéneos:** este tipo de objetos permiten almacenar diferentes tipos de datos (númerico, carácter y lógico).
+
+- **Dimensiones:** hace referencia al numero de dimensiones (filas y/o columnas) de un objeto.
+
+---
+# Vectores (...)
+
+```{r,eval=T,include=T}
+# Chracter
+char_vec = c("a","b","c","r","d","a","e","c","a","r","r")
+char_vec
+
+# Logicos
+log_vec = c(TRUE, FALSE, T, F)
+log_vec
+
+# Numericvos
+log_num = 1:10
+log_num
+
+# ¡Ojo! Los elementos no son homogeneos (explicar que pasa)
+vector2 = c(1,2,"c")
+str(vector2)
+```
+
+---
+# Vectores (...)
+
+```{r,eval=T,include=T}
+as.numeric(c(1,2,"c")) # convierte en NA los no-numeros
+
+# seleccionar elementos de un vector
+char_vec = c("a","b","c","r","d","a","e","c","a","r","r")
+char_vec[2] # elemento numero 2
+char_vec[1:5] # 5 primeros elementos
+char_vec[-1] # eliminar el elemento de la posicion 1 del vector
+char_vec[char_vec != "a"] # dejar todos los elementos de char_vec diferentes de "a"
+!char_vec %in% c("c","r")
+```
+
+---
+# Matrices (...)
+
+```{r,eval=T,include=T}
+# Generemos una matriz de numeros aleatorios (de una distribucion normal)
+matriz_n = matrix(rnorm(n = 25,mean = 100 ,sd = 10) , nrow = 5, ncol = 5) # Matriz de 5*5
+matriz_n
+nrow(matriz_n) # numero de filas
+ncol(matriz_n) # numero de columnas
+```
+
+---
+# Matrices (...)
+
+```{r,eval=T,include=T}
+# Elementos de una matriz
+matriz_n[1,2] # elemento de la fila 1 y columna 2
+matriz_n[,2] # elemento de la columna 2
+matriz_n[4,] # elemento de la fila 4
+```
+
+---
+# Dataframes
+
+```{r,eval=T,include=T}
+# generemos un dataframe
+nota_num = seq(0,10,2)
+nota_alf = c("a","b","b","a","c","b")
+dfm = data.frame(nota_num ,nota_alf) # Creamos el dataframe
+dfm 
+dfm[3,2] # elemento de la fila 3 columna 1
+dfm[,1] # elemento de la columna 1
+```
+
+---
+# Listas
+
+```{r,eval=T,include=T}
+lista = list()
+lista[[1]] = data.frame(nota_n = 1:5 ,nota_alf = c('a','a','b','b','c'))
+lista[[2]] = c(2,3,8,9)
+lista[[3]] = 'hola'
+lista
+```
+
+Para seleccionar elementos de una lista puedes aplicar la intuition que usas con los vectores. 
+
+
+<!------------------------------------------>
+<!--- Importar y exportar bases de datos --->
+<!------------------------------------------>
+---
+class: inverse, center, middle
+name: import
+
+# Importar y exportar bases de datos
+
+<html><div style='float:left'></div><hr color='#FF007F' size=1px width=796px></html>
+
+
+---
+# Importar bases de datos
+
+```{r,eval=T,include=T}
+# Isnpeccionamos los archivos dsponibles
+list.files("data/input/")
+
+# Importar bases de datos en formato .csv
+data_csv = read.csv2(file = 'data/input/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) 
+data_csv = data.frame(data_csv)
+data_csv[8:10,] # ver observaciones de la 8 a la 10
+```
+
+---
+# Exportar bases de datos
+
+```{r,eval=T,include=T}
+
+# Isnpeccionamos el directorio a exportar
+list.files("data/output/")
+
+# 4.3.1 Exportar bases de datos en formato .csv
+write.csv(x = data_csv , file = 'data/output/censo 2018.csv')
+```
+
+---
+# Homework
+
+<div align="center">
+<img src="pics/homework.png" height=550>
+</div>
+
+<!--------------------->
+<!---    Hoy vimos  --->
+<!--------------------->
+---
+class: inverse, center, middle
+
+# Hoy vimos...
+<html><div style='float:left'></div><hr color='#FF007F' size=1px width=796px></html>
+
+---
+#  Hoy vimos...
+
+## ☑ Directorio de trabajo en R
+
+## ☑ Tipos de datos
+
+## ☑ Estructuras de datos en R
+
+## ☑ Importar y exportar bases de datos
+

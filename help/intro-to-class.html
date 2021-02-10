@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Taller de R: Estadística y programación</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Eduard Martinez" />
+    <link href="libs/remark-css/fc.css" rel="stylesheet" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Taller de R: Estadística y programación
+## Lectura 3: Estructuras de datos en R
+### Eduard Martinez
+### Universidad de los Andes | <a href="https://github.com/taller-R">ECON-1302</a>
+
+---
+
+
+
+# Anteriormente...
+
+1. [Rstudio](#rstudio)
+   
+   1.1. Interfaz de Rstudio
+   
+   1.2. Decoding messages
+
+2. [Use R!](#use_r)
+   
+   2.1. Sintaxis de R
+   
+   2.2. Editor de sintaxis
+   
+   2.3. Librerías
+
+3. [Git y GitHub](#github)
+
+   3.1. Qué es Git y GitHub?
+   
+   3.2. Flujo de trabajo
+   
+---
+   
+# Hoy veremos...
+
+1. [Directorio de trabajo](#setwd)
+
+2. [Tipos de datos](#type)
+
+3. [Estructuras de datos en R](#structure)
+   
+   3.1. Homogéneos
+   
+   3.2. Heterogéneos
+   
+4. [Importar y exportar bases de datos](#import)
+
+
+
+&lt;!-----------------------------&gt;
+&lt;!--- Directorio de trabajo ---&gt;
+&lt;!-----------------------------&gt;
+---
+class: inverse, center, middle
+name: setwd
+
+# Directorio de trabajo
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#FF007F' size=1px width=796px&gt;&lt;/html&gt;
+
+Es la ubicacion dentro de nuestro equipo en la que se encuentran los archivos que podemos importar (directamente) archivos del disco duro a R y exportar (directamente) objetos de R al disco duro.
+
+---
+# Por qué establecer un WD?
+
+- Si no usamos un WD
+
+
+```r
+'usuario1/escritorio/trabajo final/datos/' # importar los datos
+
+'usuario1/escritorio/trabajo final/resultados/' # exportar los resultados
+```
+
+--
+- si establecemos `'usuario1/escritorio/trabajo final/'` como WD:
+
+```r
+'datos/' # importar los datos
+
+'resultados/' # exportar los resultados
+```
+
+--
+- algunas funciones para trabajar con un WD:
+
+
+```r
+# obtener la ruta del directorio de trabajo actual
+getwd() 
+
+# obtener un vector con los nombres de los archivos que estan en el wd
+list.files(path = '.') 
+
+# Establecer un directorio de trabajo
+setwd('ruta del nuevo directorio de trabajo') 
+```
+
+&lt;!---------------------------&gt;
+&lt;!--- Tipos de datos en R ---&gt;
+&lt;!---------------------------&gt;
+---
+class: inverse, center, middle
+name: type
+
+# Tipos de datos en R
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#FF007F' size=1px width=796px&gt;&lt;/html&gt;
+
+---
+# Tipos de datos en R
+
+EN R encontramos estos datos en formato `logical`, `integer`, `numeric` (o `double`), "complex", `character` y "raw".
+
+
+```r
+# carácter
+vector_c = c("hola",'a') # podemos usar ' o " para caracteres
+is.character(vector_c)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+# lógico
+vector_l = c(NA,TRUE,FALSE)
+is.logical(vector_l)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+# númerico
+vector_n = c(5,2)
+is.numeric(vector_n)
+```
+
+```
+## [1] TRUE
+```
+
+puedo consultar el tipo de datos que contiene un objeto usandl la función `is()`.
+   
+&lt;!---------------------------------&gt;
+&lt;!--- Estructuras de datos en R ---&gt;
+&lt;!---------------------------------&gt;
+---
+class: inverse, center, middle
+name: structure
+
+# Estructuras de datos en R
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#FF007F' size=1px width=796px&gt;&lt;/html&gt;
+
+---
+# Estructuras de datos
+
+| Dimensiones | Homogéneos	|  Heterogéneos  |
+|:-|-:|-:|
+| 1d          |  Vector    |   Listas       |
+|             |            |                |
+| 2d          |  Matriz    |   Dataframe    |
+|             |            |                |
+| nd          |  Array     |                |
+
+
+- **Homogéneos:** todos los elementos de este objeto deben ser del mismo tipo (númerico o carácter o lógico).
+
+- **Heterogéneos:** este tipo de objetos permiten almacenar diferentes tipos de datos (númerico, carácter y lógico).
+
+- **Dimensiones:** hace referencia al numero de dimensiones (filas y/o columnas) de un objeto.
+
+---
+# Vectores (...)
+
+
+```r
+# Chracter
+char_vec = c("a","b","c","r","d","a","e","c","a","r","r")
+char_vec
+```
+
+```
+##  [1] "a" "b" "c" "r" "d" "a" "e" "c" "a" "r" "r"
+```
+
+```r
+# Logicos
+log_vec = c(TRUE, FALSE, T, F)
+log_vec
+```
+
+```
+## [1]  TRUE FALSE  TRUE FALSE
+```
+
+```r
+# Numericvos
+log_num = 1:10
+log_num
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
+# ¡Ojo! Los elementos no son homogeneos (explicar que pasa)
+vector2 = c(1,2,"c")
+str(vector2)
+```
+
+```
+##  chr [1:3] "1" "2" "c"
+```
+
+---
+# Vectores (...)
+
+
+```r
+as.numeric(c(1,2,"c")) # convierte en NA los no-numeros
+```
+
+```
+## Warning: NAs introduced by coercion
+```
+
+```
+## [1]  1  2 NA
+```
+
+```r
+# seleccionar elementos de un vector
+char_vec = c("a","b","c","r","d","a","e","c","a","r","r")
+char_vec[2] # elemento numero 2
+```
+
+```
+## [1] "b"
+```
+
+```r
+char_vec[1:5] # 5 primeros elementos
+```
+
+```
+## [1] "a" "b" "c" "r" "d"
+```
+
+```r
+char_vec[-1] # eliminar el elemento de la posicion 1 del vector
+```
+
+```
+##  [1] "b" "c" "r" "d" "a" "e" "c" "a" "r" "r"
+```
+
+```r
+char_vec[char_vec != "a"] # dejar todos los elementos de char_vec diferentes de "a"
+```
+
+```
+## [1] "b" "c" "r" "d" "e" "c" "r" "r"
+```
+
+```r
+!char_vec %in% c("c","r")
+```
+
+```
+##  [1]  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE
+```
+
+---
+# Matrices (...)
+
+
+```r
+# Generemos una matriz de numeros aleatorios (de una distribucion normal)
+matriz_n = matrix(rnorm(n = 25,mean = 100 ,sd = 10) , nrow = 5, ncol = 5) # Matriz de 5*5
+matriz_n
+```
+
+```
+##           [,1]      [,2]      [,3]      [,4]      [,5]
+## [1,] 122.92301 108.34336  92.81389 119.62298 105.63052
+## [2,]  86.52619 105.96215  96.53529 103.02756 114.43224
+## [3,]  98.78961  98.52650 104.61981 104.89989 102.65404
+## [4,] 100.82980  94.86832 104.64277 112.11040  81.96624
+## [5,]  88.50532  99.33949  90.36829  99.09475  97.55035
+```
+
+```r
+nrow(matriz_n) # numero de filas
+```
+
+```
+## [1] 5
+```
+
+```r
+ncol(matriz_n) # numero de columnas
+```
+
+```
+## [1] 5
+```
+
+---
+# Matrices (...)
+
+
+```r
+# Elementos de una matriz
+matriz_n[1,2] # elemento de la fila 1 y columna 2
+```
+
+```
+## [1] 108.3434
+```
+
+```r
+matriz_n[,2] # elemento de la columna 2
+```
+
+```
+## [1] 108.34336 105.96215  98.52650  94.86832  99.33949
+```
+
+```r
+matriz_n[4,] # elemento de la fila 4
+```
+
+```
+## [1] 100.82980  94.86832 104.64277 112.11040  81.96624
+```
+
+---
+# Dataframes
+
+
+```r
+# generemos un dataframe
+nota_num = seq(0,10,2)
+nota_alf = c("a","b","b","a","c","b")
+dfm = data.frame(nota_num ,nota_alf) # Creamos el dataframe
+dfm 
+```
+
+```
+##   nota_num nota_alf
+## 1        0        a
+## 2        2        b
+## 3        4        b
+## 4        6        a
+## 5        8        c
+## 6       10        b
+```
+
+```r
+dfm[3,2] # elemento de la fila 3 columna 1
+```
+
+```
+## [1] b
+## Levels: a b c
+```
+
+```r
+dfm[,1] # elemento de la columna 1
+```
+
+```
+## [1]  0  2  4  6  8 10
+```
+
+---
+# Listas
+
+
+```r
+lista = list()
+lista[[1]] = data.frame(nota_n = 1:5 ,nota_alf = c('a','a','b','b','c'))
+lista[[2]] = c(2,3,8,9)
+lista[[3]] = 'hola'
+lista
+```
+
+```
+## [[1]]
+##   nota_n nota_alf
+## 1      1        a
+## 2      2        a
+## 3      3        b
+## 4      4        b
+## 5      5        c
+## 
+## [[2]]
+## [1] 2 3 8 9
+## 
+## [[3]]
+## [1] "hola"
+```
+
+Para seleccionar elementos de una lista puedes aplicar la intuition que usas con los vectores. 
+
+
+&lt;!------------------------------------------&gt;
+&lt;!--- Importar y exportar bases de datos ---&gt;
+&lt;!------------------------------------------&gt;
+---
+class: inverse, center, middle
+name: import
+
+# Importar y exportar bases de datos
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#FF007F' size=1px width=796px&gt;&lt;/html&gt;
+
+
+---
+# Importar bases de datos
+
+
+```r
+# Isnpeccionamos los archivos dsponibles
+list.files("data/input/")
+```
+
+```
+## [1] "Area - Caracteristicas generales (Personas).dta"
+## [2] "censo 2018.csv"                                 
+## [3] "Homicidios 2020.Rdata"                          
+## [4] "hurto-personas-2020_0.xlsx"                     
+## [5] "proyecciones DANE 2005-2020.rds"
+```
+
+```r
+# Importar bases de datos en formato .csv
+data_csv = read.csv2(file = 'data/input/censo 2018.csv' ,sep = ",", header = T, stringsAsFactors = F) 
+data_csv = data.frame(data_csv)
+data_csv[8:10,] # ver observaciones de la 8 a la 10
+```
+
+```
+##     X Censo.Nacional.de.Población.y.Vivienda...CNPV.2018         ...2 ...3
+## 8   8                                                 05    Antioquia &lt;NA&gt;
+## 9   9                                                 08    Atlántico &lt;NA&gt;
+## 10 10                                                 11 Bogotá, D.C. &lt;NA&gt;
+##       ...4  ...5    ...6
+## 8  5931492 43296 5974788
+## 9  2336434  5831 2342265
+## 10 7149540 31929 7181469
+```
+
+---
+# Exportar bases de datos
+
+
+```r
+# Isnpeccionamos el directorio a exportar
+list.files("data/output/")
+```
+
+```
+## character(0)
+```
+
+```r
+# 4.3.1 Exportar bases de datos en formato .csv
+write.csv(x = data_csv , file = 'data/output/censo 2018.csv')
+```
+
+---
+# Homework
+
+&lt;div align="center"&gt;
+&lt;img src="pics/homework.png" height=550&gt;
+&lt;/div&gt;
+
+&lt;!---------------------&gt;
+&lt;!---    Hoy vimos  ---&gt;
+&lt;!---------------------&gt;
+---
+class: inverse, center, middle
+
+# Hoy vimos...
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#FF007F' size=1px width=796px&gt;&lt;/html&gt;
+
+---
+#  Hoy vimos...
+
+## ☑ Directorio de trabajo en R
+
+## ☑ Tipos de datos
+
+## ☑ Estructuras de datos en R
+
+## ☑ Importar y exportar bases de datos
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+---
+title: "Untitled"
+author: "Eduard Martinez"
+date: "8/19/2020"
+output: html_document
+---
+
+---
+title: Task Clase 1
+author: "Eduard F Martinez-Gonzalez"
+date: "8/18/2020"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<style type="text/css">
+h1 {
+  font-size: 34px;
+  color: red
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+p {
+ font-size: 16px;
+ color: black
+}
+li {
+ font-size: 16px;
+ color: black
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+# Vectores
+
+* Construya un vector con los numeros pares del 3 a 27.
+
+```{r,eval = TRUE,warning = TRUE,error = TRUE,echo=TRUE}
+pares = seq(3,27,2)
+```
+
+* Construya un vector con los numeros pares del 4 al 20 en orden descendente. 
+
+```{r}
+pares = seq(3,27,2)
+```
+
+* Construya un vector con todas las letras del alfabeto (llamelo a_z).
+
+```{r}
+a_z = letters
+```
+
+* Construya un vector con en el que filtre todo lo que no es es una vocal en el vector a_z 
+
+```{r}
+no_vocales = letters[!letters %in% c("a","e","i","o","u")]
+```
+
+* Se puede crear un vector que contenga letras y numeros? Se altera el tipo de dato?
+
+Si se puede, pero se alteran los atributos de los elementos.
+```{r}
+str(c("a","e",3,"o",1))
+```
+
+
+# Matrices 
+
+* Construya una matriz (llamada matriz_normal) de dimensiones 10x4 con numeros aleatorios de una ditribucion normal con Mean = 10 y SD = 3 .
+
+```{r}
+matriz_normal <- matrix(rnorm(40,10,3), nrow = 10, ncol = 4)
+```
+
+* Consulte las dimensiones de la matriz
+
+```{r}
+dim(matriz_normal)
+```
+
+* De matriz_normal extraiga la primera columna y genere un vector (llamado vector_normal).
+
+```{r}
+vector_normal = matriz_normal[1,]
+```
+
+* Pinte sobre la consola el elemento de la fila 4 y la columna 3 de la matriz
+
+```{r}
+matriz_normal[4,3]
+```
+
+
+# Dataframes
+
+* Convierta matriz_normal en un dataframe (llamelo data_normal) y verifique que este nuevo objeto es un dataframe.
+
+```{r}
+data_normal = data.frame(matriz_normal)
+class(data_normal)
+```
+
+* Consulte los nombres de las columnas del dataframe y despues asigeneles los siguientes nombres c("col_1","col_2","col_3","col_4")
+
+```{r}
+colnames(data_normal)
+
+colnames(data_normal) = c("col_1","col_2" ,"col_3","col_4")
+```
+
+* Pinte sobre la consola los elementos de la fila 3 del dataframe
+
+```{r}
+data_normal[3,]
+```
+
+# Listas
+
+* Cree una lista vacia (llamela lista_datos)
+
+```{r}
+lista_datos = list()
+```
+
+* Guarde la matriz ```matriz_normal``` en la posicion 1 de ```lista_datos```
+
+```{r}
+lista_datos[[1]] = matriz_normal
+```
+
+* Pinte sobre la consola la columna 2 de ```matriz_normal``` que esta guardada en ```lista_datos```
+
+```{r}
+lista_datos[[1]][2,]
+```
+
+
