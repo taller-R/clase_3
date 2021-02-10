@@ -124,11 +124,15 @@ dfm = data.frame(nota_numerica,nota_alfabetica) # Creamos el dataframe
 
 # elementos de un dataframe
 dfm 
-dfm[3,1]
-dfm[,2]
+dfm[5,2]
+dfm[,1]
 
 
+lista_1[[1]] = dfm
+lista_1[[2]] = matriz_n
 
+
+lista_1[[1]][1,]
 
 ### Listas ###
 
